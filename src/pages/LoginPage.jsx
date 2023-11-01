@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import LoginForm from '../components/LoginForm/LoginForm';
 
-export function LoginPage() {
+function LoginPage() {
   const [users, setUsers] = useState([]);
   const [loginError, setLoginError] = useState(false);
   const navigate = useNavigate();
@@ -40,3 +40,5 @@ export function LoginPage() {
     </div>
   );
 }
+
+export default LoginPage;

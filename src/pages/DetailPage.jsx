@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import CommentList from '../components/CommentList/CommentList';
 
-export function DetailPage({ postId }) {
+function DetailPage({ postId }) {
   const [comments, setComments] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -39,3 +39,5 @@ export function DetailPage({ postId }) {
     <CommentList comments={comments}/>
   );
 }
+
+export default DetailPage;
