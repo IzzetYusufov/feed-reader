@@ -1,4 +1,4 @@
-- [DEMO LINK]()
+- [DEMO]()
 
 ## Attention!
  - To enter the account, please use this link - https://jsonplaceholder.typicode.com/users (Username = username and Password = email) || EXAMPLE: Username = Bret && Password = Sincere@april.biz
