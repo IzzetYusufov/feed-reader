@@ -1,32 +1,30 @@
 import React, { useState, useEffect } from 'react';
-import PostList from '../components/PostList/PostList';
+import { Link, useNavigate } from 'react-router-dom';
+import '../components/PostList/PostList.css';
 
 function FeedListPage() {
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const navigate = useNavigate();
+  const [visiblePosts, setVisiblePosts] = useState(7);
 
   useEffect(() => {
-    const fetchPostsFromApi = async () => {
-      try {
-        const response = await fetch('https://jsonplaceholder.typicode.com/posts');
-      
-        if (!response.ok) {
-          throw new Error('Failed');
-        }
-      
-        const data = await response.json();
-        setPosts(data);
-        setLoading(false);
-      }
-      catch (error) {
-        setError(error);
-        setLoading(false);
-      }
-    };
+    setError(null);
+    setLoading(true);
 
-    fetchPostsFromApi();
-  }, []);
+    fetch('https://jsonplaceholder.typicode.com/posts')
+      .then((res) => {
+        if (!res.ok) {
+          throw new Error(res)
+        } else {
+          return res.json()
+        }
+      })
+      .then(setPosts)
+      .catch((e) => setError(e))
+      .finally(() => setLoading(false))
+  }, [])
 
   const handleDeletePost = (postId) => {
     const updatedPosts = posts.filter(post => post.id !== postId);
@@ -47,6 +45,11 @@ function FeedListPage() {
       });
   };
 
+  function formatTitle(title) {
+    return title.charAt(0).toUpperCase() + title.slice(1);
+  }
+  
+
   if (loading) {
     return <div>Loading posts...</div>;
   }
@@ -57,7 +60,43 @@ function FeedListPage() {
 
   return (
     <div>
-      <PostList posts={posts} onDeletePost={handleDeletePost} />
+      <div className="back">
+        <button
+          className="back__button"
+          onClick={() => navigate(-1)}
+        >
+          Go Back
+        </button>
+      </div>
+
+      <h2>Posts</h2>
+      <ul className='list'>
+        {posts.slice(0, visiblePosts).map((post) => (
+          <li className='list__item' key={post.id}>
+            <h3>{formatTitle(post.title)}</h3>
+            <p>{formatTitle(post.body)}</p>
+            <Link to={`/feeds/${post.id}`} className="detail__link">
+              Read More
+            </Link>
+            
+            <button
+              className='delete__button'
+              onClick={() => handleDeletePost(post.id)}
+            >
+              Delete
+            </button>
+          </li>
+        ))}
+      </ul>
+
+      {visiblePosts < posts.length && (
+        <button
+          onClick={() => setVisiblePosts((prevVisiblePosts) => prevVisiblePosts + 7)} 
+          className="show-more-button"
+        >
+          Show More
+        </button>
+      )}
     </div>
   );
 }

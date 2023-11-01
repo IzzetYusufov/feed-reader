@@ -54,7 +54,7 @@ h2 {
 .delete__button {
   width: 150px;
   height: 40px;
-  margin-left: 900px;
+  margin-left: 20px;
   background-color: rgb(224, 222, 202);
   cursor: pointer;
 }
